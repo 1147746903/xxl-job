@@ -45,6 +45,28 @@ public class SampleXxlJob {
         // default success
     }
 
+    /**
+     * wqe
+     * 1、自动任务示例（Bean模式）
+     * 默认5秒执行一次
+     */
+    @XxlJob(value = "autoJobHandler2", autoRegister=true)
+    public void autoJobHandler() throws Exception {
+        System.out.println("自动任务2注册成功");
+        // default success
+    }
+
+    /**
+     * wqe
+     * 1、自动任务示例（Bean模式）
+     * 3秒执行一次
+     */
+    @XxlJob(value = "autoJobHandler3", autoRegister=true)
+    public void autoJobHandler3() throws Exception {
+        System.out.println("自动任务3注册成功");
+        // default success
+    }
+
 
     /**
      * 2、分片广播任务

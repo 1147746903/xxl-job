@@ -2,6 +2,8 @@ package com.xxl.job.core.executor;
 
 import com.xxl.job.core.biz.AdminBiz;
 import com.xxl.job.core.biz.client.AdminBizClient;
+import com.xxl.job.core.biz.model.RegistryJobParam;
+import com.xxl.job.core.biz.model.ReturnT;
 import com.xxl.job.core.handler.IJobHandler;
 import com.xxl.job.core.handler.annotation.XxlJob;
 import com.xxl.job.core.handler.impl.MethodJobHandler;
@@ -14,6 +16,7 @@ import com.xxl.job.core.util.IpUtil;
 import com.xxl.job.core.util.NetUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.CollectionUtils;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -82,6 +85,31 @@ public class XxlJobExecutor  {
 
         // init executor-server
         initEmbedServer(address, ip, port, appname, accessToken);
+    }
+
+    /**
+     * wqe
+     * @param jobs
+     */
+    // 注册Job
+    public void registerJob(List<RegistryJobParam> jobs) {
+        jobs.forEach(item -> item.setJobGroup(appname));
+        //获取admin中的执行器
+        List<AdminBiz> adminBizList = getAdminBizList();
+        //判断是否存在执行器
+        if (CollectionUtils.isEmpty(adminBizList))
+            logger.warn(">>>>>>>>>>> xxl-job, 自动注册job失败,未找到执行器。");
+
+        for (AdminBiz adminBiz : adminBizList) {
+            //在执行器中添加任务，发送请求到job-admin的JobApiController类中进行数据库的添加操作
+            ReturnT<String> stringReturnT = adminBiz.registryJob(jobs);
+            if (stringReturnT.getCode() == 200){
+                logger.info(">>>>>>>>>>> xxl-job register job success");
+            }else {
+                logger.error(">>>>>>>>>>> xxl-job register job failed, content:{}, msg:{}",stringReturnT.getContent(),stringReturnT.getMsg());
+            }
+        }
+        jobs = null;
     }
 
     public void destroy(){

@@ -1,11 +1,10 @@
 package com.xxl.job.admin.controller;
 
+import com.google.gson.Gson;
 import com.xxl.job.admin.controller.annotation.PermissionLimit;
 import com.xxl.job.admin.core.conf.XxlJobAdminConfig;
 import com.xxl.job.core.biz.AdminBiz;
-import com.xxl.job.core.biz.model.HandleCallbackParam;
-import com.xxl.job.core.biz.model.RegistryParam;
-import com.xxl.job.core.biz.model.ReturnT;
+import com.xxl.job.core.biz.model.*;
 import com.xxl.job.core.util.GsonTool;
 import com.xxl.job.core.util.XxlJobRemotingUtil;
 import org.springframework.stereotype.Controller;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -63,10 +63,33 @@ public class JobApiController {
         } else if ("registryRemove".equals(uri)) {
             RegistryParam registryParam = GsonTool.fromJson(data, RegistryParam.class);
             return adminBiz.registryRemove(registryParam);
-        } else {
+        }else if("registryGroup".equals(uri)){
+            //wqe
+            RegistryGroupParam param = GsonTool.fromJson(data, RegistryGroupParam.class);
+            return adminBiz.registryGroup(param);
+        } else if("registryJob".equals(uri)){
+            //wqe
+            List<RegistryJobParam> registryParam = jsonStringConvertToList(data, RegistryJobParam[].class);
+            return adminBiz.registryJob(registryParam);
+        }
+        else {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "invalid request, uri-mapping("+ uri +") not found.");
         }
 
+    }
+
+    /**
+     * wqe
+     * 把一个json的字符串转换成为一个包含POJO对象的List
+     * @param string
+     * @param cls
+     * @param <T>
+     * @return
+     */
+    public static <T> List<T> jsonStringConvertToList(String string, Class<T[]> cls) {
+        Gson gson = new Gson();
+        T[] array = gson.fromJson(string, cls);
+        return Arrays.asList(array);
     }
 
 }

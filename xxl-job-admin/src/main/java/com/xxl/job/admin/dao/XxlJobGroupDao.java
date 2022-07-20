@@ -34,4 +34,11 @@ public interface XxlJobGroupDao {
                              @Param("appname") String appname,
                              @Param("title") String title);
 
+    /**
+     * wqe
+     * @param appname
+     * @return
+     */
+    public XxlJobGroup findByAppname(@Param("appname") String appname);
+
 }

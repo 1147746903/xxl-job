@@ -1,5 +1,6 @@
 package com.xxl.job.core.executor.impl;
 
+import com.xxl.job.core.biz.model.RegistryJobParam;
 import com.xxl.job.core.executor.XxlJobExecutor;
 import com.xxl.job.core.glue.GlueFactory;
 import com.xxl.job.core.handler.annotation.XxlJob;
@@ -15,6 +16,8 @@ import org.springframework.core.MethodIntrospector;
 import org.springframework.core.annotation.AnnotatedElementUtils;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 
@@ -26,7 +29,7 @@ import java.util.Map;
 public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationContextAware, SmartInitializingSingleton, DisposableBean {
     private static final Logger logger = LoggerFactory.getLogger(XxlJobSpringExecutor.class);
 
-
+    List<RegistryJobParam> autoRegistryJobs = new ArrayList<>(); //wqe
     // start
     @Override
     public void afterSingletonsInstantiated() {
@@ -43,6 +46,9 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
         // super start
         try {
             super.start();
+            //初始化完成后，拿到需要进行自动注册的任务进行注册
+            //wqe
+            super.registerJob(autoRegistryJobs);
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
@@ -107,6 +113,11 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
                 XxlJob xxlJob = methodXxlJobEntry.getValue();
                 // regist
                 registJobHandler(xxlJob, bean, executeMethod);
+                //自动注册任务，看注解中是否为true,为true进行注册
+                //wqe
+                if (xxlJob.autoRegister()){
+                    autoRegistryJobs.add(new RegistryJobParam("",xxlJob.description(),xxlJob.value(),xxlJob.scheduleConf()));
+                }
             }
         }
     }
