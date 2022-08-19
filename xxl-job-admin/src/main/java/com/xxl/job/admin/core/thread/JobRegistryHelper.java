@@ -208,6 +208,7 @@ public class JobRegistryHelper {
 
     /**
      * wqe
+     * 注册执行器
      * @param registryParam
      * @return
      */
@@ -218,10 +219,9 @@ public class JobRegistryHelper {
                 || !StringUtils.hasText(registryParam.getTitle())) {
             return new ReturnT<String>(ReturnT.FAIL_CODE, "Illegal Argument.");
         }
-
+        //从数据库中查询执行器
         XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().findByAppname(registryParam.getAppname());
         if (group == null) {
-
             XxlJobGroup xxlJobGroup = new XxlJobGroup();
             xxlJobGroup.setAppname(registryParam.getAppname());
             xxlJobGroup.setTitle(registryParam.getTitle());
@@ -232,7 +232,6 @@ public class JobRegistryHelper {
                 return new ReturnT<String>(ReturnT.FAIL_CODE, "自动注册执行器失败！");
             }
         }
-
         return ReturnT.SUCCESS;
     }
 
@@ -243,7 +242,6 @@ public class JobRegistryHelper {
 		}
 		//获取需要注册的任务的执行器
         XxlJobGroup group = XxlJobAdminConfig.getAdminConfig().getXxlJobGroupDao().findByAppname(registryParam.get(0).getJobGroup());
-
         if (group == null) {
 			//执行器为空，添加执行器
             XxlJobGroup xxlJobGroup = new XxlJobGroup();
@@ -291,7 +289,6 @@ public class JobRegistryHelper {
 
             XxlJobAdminConfig.getAdminConfig().getXxlJobInfoDao().save(jobInfo);
         }
-
         return ReturnT.SUCCESS;
     }
 

@@ -65,10 +65,12 @@ public class JobApiController {
             return adminBiz.registryRemove(registryParam);
         }else if("registryGroup".equals(uri)){
             //wqe
+            //如果路径包含registryGroup发送http请求注册执行器
             RegistryGroupParam param = GsonTool.fromJson(data, RegistryGroupParam.class);
             return adminBiz.registryGroup(param);
         } else if("registryJob".equals(uri)){
             //wqe
+            //如果路径包含RegistryJobParam发送http请求注册执行器
             List<RegistryJobParam> registryParam = jsonStringConvertToList(data, RegistryJobParam[].class);
             return adminBiz.registryJob(registryParam);
         }

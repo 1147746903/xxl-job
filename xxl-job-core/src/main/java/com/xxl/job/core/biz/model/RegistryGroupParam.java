@@ -3,7 +3,7 @@ package com.xxl.job.core.biz.model;
 import java.io.Serializable;
 
 /**
- * wqe添加
+ * wqe注册执行器的对象
  * Created by xuxueli on 2017-05-10 20:22:42
  */
 public class RegistryGroupParam implements Serializable {

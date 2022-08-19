@@ -46,7 +46,7 @@ public class AdminBizClient implements AdminBiz {
     }
 
     /**
-     * wqe
+     * wqe 注册执行器
      * @param param
      * @return
      */
@@ -56,7 +56,7 @@ public class AdminBizClient implements AdminBiz {
     }
 
     /**
-     * wqe
+     * wqe注册任务
      * @param param
      * @return
      */

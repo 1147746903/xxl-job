@@ -47,7 +47,7 @@ public class XxlJobSpringExecutor extends XxlJobExecutor implements ApplicationC
         try {
             super.start();
             //初始化完成后，拿到需要进行自动注册的任务进行注册
-            //wqe
+            //wqe第一步就是从这开始
             super.registerJob(autoRegistryJobs);
         } catch (Exception e) {
             throw new RuntimeException(e);

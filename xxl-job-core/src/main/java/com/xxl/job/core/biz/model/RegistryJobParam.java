@@ -5,7 +5,7 @@ import com.xxl.job.core.enums.ExecutorBlockStrategyEnum;
 import java.io.Serializable;
 
 /**
- * wqe添加
+ * wqe注册任务的对象
  * Created by xuxueli on 2017-05-10 20:22:42
  */
 public class RegistryJobParam implements Serializable {
